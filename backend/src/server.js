@@ -7,11 +7,12 @@ import path from "path";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { connectDB } from "./lib/db.js";
+import { ENV } from "./lib/env.js";
 
 // creating and configuring necessary objects
 const website = express();
 dotenv.config();
-const PORT = process.env.PORT || 2001;
+const PORT = ENV.PORT || 2001;
 const __dirname = path.resolve();
 
 // website hints
@@ -22,7 +23,7 @@ website.use("/api/auth", authRoutes);
 website.use("/api/message", messageRoutes);
 
 // production deployment
-if(process.env.NODE_ENV === "production") {
+if(ENV.NODE_ENV === "production") {
     website.use(express.static(path.join(__dirname, "../frontend/dist")));
     website.get("*", (req, res) => {
         res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));

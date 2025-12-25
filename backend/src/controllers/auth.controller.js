@@ -2,6 +2,8 @@ import express from "express";
 import bcrypt from "bcryptjs"
 import User from "../models/User.js"
 import { generateToken } from "../lib/utils.js";
+import { sendWelcomeEmail } from "../emails/emailHandler.js";
+import { ENV } from "../lib/env.js";
 
 export const signup = async (req, res) => {
     const { username, email, password } = req.body;
@@ -32,7 +34,7 @@ export const signup = async (req, res) => {
         }
 
         // password encryption
-        const salt = await bcrypt.genSalt(15);
+        const salt = await bcrypt.genSalt(14);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = new User({
@@ -41,18 +43,27 @@ export const signup = async (req, res) => {
             password: hashedPassword
         });
 
-        if(newUser) {
-            const savedUser = await newUser.save();
-            generateToken(newUser._id, res);
-
-            return res.status(201).json({
-                _id: savedUser._id,
-                username: savedUser.username,
-                email: savedUser.email,
-                profilePic: savedUser.profilePic
-            });
-        } else {
+        if(!newUser) { // if creating new User failed for some reason, maybe cuz data didn't match userSchema
             return res.status(400).json({ message: "Invalid user data." });
+        }
+        const savedUser = await newUser.save();
+        generateToken(newUser._id, res);
+
+        res.status(201).json({
+            _id: savedUser._id,
+            username: savedUser.username,
+            email: savedUser.email,
+            profilePic: savedUser.profilePic
+        });
+        
+        try {
+            const { CLIENT_URL } = ENV;
+            if(!CLIENT_URL) {
+                throw new Error("CLIENT_URL enviroment variable not set.");
+            }
+            await sendWelcomeEmail(savedUser.email, savedUser.username, CLIENT_URL);
+        } catch (error) {
+            throw new Error(`SEND_EMAIL_FAILURE: ${error}`);
         }
 
     } catch (error) {
