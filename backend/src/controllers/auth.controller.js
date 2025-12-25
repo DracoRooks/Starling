@@ -1,4 +1,3 @@
-import express from "express";
 import bcrypt from "bcryptjs"
 import User from "../models/User.js"
 import { generateToken } from "../lib/utils.js";
@@ -47,7 +46,7 @@ export const signup = async (req, res) => {
             return res.status(400).json({ message: "Invalid user data." });
         }
         const savedUser = await newUser.save();
-        generateToken(newUser._id, res);
+        generateToken(savedUser._id, res);
 
         res.status(201).json({
             _id: savedUser._id,
@@ -56,15 +55,9 @@ export const signup = async (req, res) => {
             profilePic: savedUser.profilePic
         });
         
-        try {
-            const { CLIENT_URL } = ENV;
-            if(!CLIENT_URL) {
-                throw new Error("CLIENT_URL enviroment variable not set.");
-            }
-            await sendWelcomeEmail(savedUser.email, savedUser.username, CLIENT_URL);
-        } catch (error) {
+        sendWelcomeEmail(savedUser.email, savedUser.username, ENV.CLIENT_URL).catch((error) => {
             throw new Error(`SEND_EMAIL_FAILURE: ${error}`);
-        }
+        });
 
     } catch (error) {
         console.error("[ERROR]::SIGNUP_CONTROLLER:", error);
@@ -73,6 +66,6 @@ export const signup = async (req, res) => {
         if(error?.code === 11000 && (error.keyPattern?.email || error.keyValue?.email)) {
             return res.status(409).json({ message: "Email already exists." })
         }
-        return res.status(500).json({ message: "Internal server error. Here" });
+        return res.status(500).json({ message: "Internal server error." });
     }
 }
