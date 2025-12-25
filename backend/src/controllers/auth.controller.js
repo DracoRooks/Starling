@@ -1,4 +1,3 @@
-import express from "express";
 import bcrypt from "bcryptjs"
 import User from "../models/User.js"
 import { generateToken } from "../lib/utils.js";
@@ -67,6 +66,6 @@ export const signup = async (req, res) => {
         if(error?.code === 11000 && (error.keyPattern?.email || error.keyValue?.email)) {
             return res.status(409).json({ message: "Email already exists." })
         }
-        return res.status(500).json({ message: "Internal server error. Here" });
+        return res.status(500).json({ message: "Internal server error." });
     }
 }
