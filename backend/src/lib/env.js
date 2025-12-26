@@ -10,3 +10,6 @@ export const ENV = {
     CLIENT_URL: process.env.CLIENT_URL,
     NODE_ENV: process.env.NODE_ENV
 };
+
+export const isProduction = ENV.NODE_ENV === "production" ? true : false;
+export const isDevelopment = ENV.NODE_ENV === "development" ? true : false;

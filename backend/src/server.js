@@ -1,17 +1,15 @@
 // importing necessary modules
 import express from "express";
-import dotenv from "dotenv";
 import path from "path";
 
 // importing all routes, controllers and libs
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { connectDB } from "./lib/db.js";
-import { ENV } from "./lib/env.js";
+import { ENV, isProduction } from "./lib/env.js";
 
 // creating and configuring necessary objects
 const website = express();
-dotenv.config();
 const PORT = ENV.PORT || 2001;
 const __dirname = path.resolve();
 
@@ -23,7 +21,7 @@ website.use("/api/auth", authRoutes);
 website.use("/api/message", messageRoutes);
 
 // production deployment
-if(ENV.NODE_ENV === "production") {
+if(isProduction) {
     website.use(express.static(path.join(__dirname, "../frontend/dist")));
     website.get("*", (req, res) => {
         res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
