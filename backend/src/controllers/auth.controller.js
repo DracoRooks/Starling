@@ -3,6 +3,7 @@ import User from "../models/User.js"
 import { generateToken } from "../lib/utils.js";
 import { sendWelcomeEmail } from "../emails/emailHandler.js";
 import { ENV } from "../lib/env.js";
+import { uploadCareClient } from "../lib/uploadCare.js";
 
 export const signup = async (req, res) => {
     const { username, email, password } = req.body;
@@ -111,3 +112,34 @@ export const logout = async (_, res) => {
     });
     return res.status(200).json({ message: "Logged out successfully." });
 };
+
+export const updateProfile = async (req, res) => {
+    try {
+        const profilePic = req.file?.profilePic;
+        if(!profilePic) return res.status(400).json({ message: "Profile pic is required." });
+        
+        const uploadResponse = await uploadCareClient.uploadFile(profilePic);
+
+        const userId = req.user._id;
+        
+        const updatedUser = await User.findByIdAndUpdate(
+            userId, {
+                email: req.body.email,
+                username: req.body.username,
+                profilePic: uploadResponse.cdnUrl
+            },
+            { new: true }
+        ).select("-password");
+
+        return res.status(200).json({
+            _id: updatedUser._id,
+            username: updatedUser.username,
+            email: updatedUser.email,
+            profilePic: updatedUser.profilePic,
+        });
+
+    } catch (error) {
+        console.error("[ERROR]::UPDATE_PROFILE_CONTROLLER:", error);
+        return res.status(500).json({ message: "Internal server error." });
+    }
+}
