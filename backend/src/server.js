@@ -1,6 +1,7 @@
 // importing necessary modules
 import express from "express";
 import path from "path";
+import cookieParser from "cookie-parser";
 
 // importing all routes, controllers and libs
 import authRoutes from "./routes/auth.route.js";
@@ -15,6 +16,7 @@ const __dirname = path.resolve();
 
 // website hints
 website.use(express.json()); // to be able to read req.body
+website.use(cookieParser()); // to parse user cookies for user request validation and authentication
 
 // all endpoints
 website.use("/api/auth", authRoutes);
