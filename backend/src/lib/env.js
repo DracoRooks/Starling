@@ -8,7 +8,8 @@ export const ENV = {
     EMAIL_FROM: process.env.EMAIL_FROM,
     EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
     CLIENT_URL: process.env.CLIENT_URL,
-    NODE_ENV: process.env.NODE_ENV
+    NODE_ENV: process.env.NODE_ENV,
+    UPLOAD_CARE_PUBLIC_KEY: process.env.UPLOAD_CARE_PUBLIC_KEY
 };
 
 export const isProduction = ENV.NODE_ENV === "production" ? true : false;
