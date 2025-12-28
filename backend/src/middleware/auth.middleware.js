@@ -27,7 +27,7 @@ export const protectRoute = async (req, res, next) => {
         next(); // chains the middleware to the controller
 
     } catch (error) {
-        console.error("[ERROR]::UPDATE_PROFILE_MIDDLEWARE_FAILURE:", error);
+        console.error("[ERROR]::PROTECT_ROUTE_MIDDLEWARE_FAILURE:", error);
         return res.status(500).json({ message: "Internal server error." });
     }
 };

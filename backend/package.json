@@ -13,6 +13,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@arcjet/inspect": "^1.0.0-beta.10",
+    "@arcjet/node": "^1.0.0-beta.10",
     "@uploadcare/upload-client": "^6.18.2",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",

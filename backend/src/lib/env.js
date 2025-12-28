@@ -12,7 +12,10 @@ export const ENV = {
     EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
     CLIENT_URL: process.env.CLIENT_URL,
     
-    UPLOAD_CARE_PUBLIC_KEY: process.env.UPLOAD_CARE_PUBLIC_KEY
+    UPLOAD_CARE_PUBLIC_KEY: process.env.UPLOAD_CARE_PUBLIC_KEY,
+
+    ARCJET_KEY: process.env.ARCJET_KEY,
+    ARCJET_ENV: process.env.ARCJET_ENV
 };
 
 export const isProduction = process.env.NODE_ENV === "production" ? true : false;
