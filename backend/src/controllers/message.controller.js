@@ -20,6 +20,9 @@ export const getMessagesById = async (req, res) => {
         const loggedInUserId = req.user._id;
         const chatPartnerId = req.params.id;
 
+        const chatPartnerExists = await User.exists({ _id: chatPartnerId });
+        if(!chatPartnerExists) return res.status(404).json({ message: "Chat Partner not found." });
+
         const messages = await Message.find({
             $or: [
                 { senderId: loggedInUserId, recieverId: chatPartnerId },
@@ -66,6 +69,9 @@ export const sendMessage = async (req, res) => {
         const { _id: senderId } = req.user;
         const { id: recieverId } = req.params;
         const { text, image } = req.body;
+
+        const recieverExists = await User.exists({ _id: recieverId });
+        if(!recieverExists) return res.status(404).json({ message: "Reciever not found." });
 
         const validText = text?.trim();
         if(!validText && !image) return res.status(400).json({ message: "Empty messages not allowed." });
