@@ -52,6 +52,7 @@ function SignUpPage() {
                       value={formData.username}
                       onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                       placeholder="Enter your username"
+                      id="txtSignupUsername"
                       autoComplete="username"
                       className="auth-input"
                     />
@@ -70,6 +71,7 @@ function SignUpPage() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="example@gmail.com"
+                      id="txtSignupEmail"
                       autoComplete="email"
                       className="auth-input"
                     />
@@ -88,6 +90,7 @@ function SignUpPage() {
                       value={formData.password}
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                       placeholder="Enter your password"
+                      id="txtSignupPassword"
                       autoComplete="new-password"
                       className="auth-input"
                     />
