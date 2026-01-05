@@ -2,12 +2,13 @@
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 // importing all routes, controllers and libs
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { connectDB } from "./lib/db.js";
-import { ENV, isProduction } from "./lib/env.js";
+import { ENV, isDevelopment, isProduction } from "./lib/env.js";
 
 // creating and configuring necessary objects
 const website = express();
@@ -15,6 +16,10 @@ const PORT = ENV.PORT || 2001;
 const __dirname = path.resolve();
 
 // website hints
+website.use(cors({
+    origin: isDevelopment ? "http://localhost:5173" : ENV.CLIENT_URL,
+    credentials: true
+}));
 website.use(express.json()); // to be able to read req.body
 website.use(cookieParser()); // to parse user cookies for user request validation and authentication
 
