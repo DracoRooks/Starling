@@ -25,3 +25,19 @@
     @apply px-4 py-1.5 inline-block rounded-lg text-sm transition-colors
     bg-sky-600/15 text-sky-300 hover:text-sky-500 hover:bg-sky-600/8
 }
+
+@property --border-angle {
+    inherits: false;
+    initial-value: 0deg;
+    syntax: '<angle>';
+}
+
+@theme {
+    @keyframes border {
+        to {
+            --border-angle: 360deg;
+        }
+    }
+
+    --animate-border: border 4s linear infinite
+}
