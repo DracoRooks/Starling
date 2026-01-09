@@ -13,6 +13,7 @@ export const ENV = {
     CLIENT_URL: process.env.CLIENT_URL,
     
     UPLOAD_CARE_PUBLIC_KEY: process.env.UPLOAD_CARE_PUBLIC_KEY,
+    UPLOAD_CARE_SECRET_KEY: process.env.UPLOAD_CARE_SECRET_KEY,
 
     ARCJET_KEY: process.env.ARCJET_KEY,
     ARCJET_ENV: process.env.ARCJET_ENV

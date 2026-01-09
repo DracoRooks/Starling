@@ -11,7 +11,7 @@ export const useChatStore = create((set, get) => ({
     isContactsLoading: false,
     isChatsLoading: false,
     isMessagesLoading: false,
-    isAudioEnabled: localStorage.getItem("isAudioEnabled") === true,
+    isAudioEnabled: JSON.parse(localStorage.getItem("isAudioEnabled")) === true,
 
     setActiveTab: (tab) => set({ activeTab: tab }),
 
@@ -23,7 +23,7 @@ export const useChatStore = create((set, get) => ({
     },
 
     getAllContacts: async () => {
-        set({ isUsersLoading: true });
+        set({ isContactsLoading: true });
         try {
             const res = await axiosInstance.get("/message/contacts");
             set({ allContacts: res.data });
@@ -33,7 +33,7 @@ export const useChatStore = create((set, get) => ({
             toast.error(error.response?.data?.message || error);
 
         } finally {
-            set({ isUsersLoading: false });
+            set({ isContactsLoading: false });
         }
     },
 
