@@ -3,6 +3,7 @@ import { useAuthStore } from '../store/useAuthStore';
 import { MessageCircleIcon, LockIcon, MailIcon, UserIcon, LoaderIcon } from "lucide-react";
 import { Link } from 'react-router';
 import AnimatedBorder from '../components/AnimatedBorder.jsx';
+import SignUpImg from "../../assets/signup.png";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -117,7 +118,10 @@ function SignUpPage() {
 
             {/* RIGHT PANEL */}
             <div className="hidden md:w-1/2 md:max-h-full md:flex items-center justify-center p-6 bg-slate-800/70">
-              <div className="bg-[url('../../assets/signup.png')] bg-cover min-w-full min-h-full"></div>
+              <div
+                className="bg-cover min-w-full min-h-full"
+                style={{ backgroundImage: `url(${SignUpImg})` }}
+              ></div>
             </div>
           </div>
         </AnimatedBorder>
