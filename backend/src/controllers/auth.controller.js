@@ -115,18 +115,17 @@ export const logout = async (_, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const profilePic = req.file?.profilePic;
+        const profilePic = req.files?.profilePic;
         if(!profilePic) return res.status(400).json({ message: "Profile pic is required." });
         
-        const uploadResponse = await uploadCareClient.uploadFile(profilePic);
+        const uploadResponse = await uploadCareClient.uploadFile(profilePic.data)
+        const profilePicUrl = "https://5fsdttzqfl.ucarecd.net/" + uploadResponse.uuid + "/-/preview/200x200/";
 
         const userId = req.user._id;
-        
+
         const updatedUser = await User.findByIdAndUpdate(
             userId, {
-                email: req.body.email,
-                username: req.body.username,
-                profilePic: uploadResponse.cdnUrl
+                profilePic: profilePicUrl
             },
             { new: true }
         ).select("-password");

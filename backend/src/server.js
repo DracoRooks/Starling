@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import fileupload from "express-fileupload";
 
 // importing all routes, controllers and libs
 import authRoutes from "./routes/auth.route.js";
@@ -21,6 +22,7 @@ website.use(cors({
     credentials: true
 }));
 website.use(express.json()); // to be able to read req.body
+website.use(fileupload({ limits: { fileSize: 5 * 1025 * 1024 } }));
 website.use(cookieParser()); // to parse user cookies for user request validation and authentication
 
 // all endpoints
