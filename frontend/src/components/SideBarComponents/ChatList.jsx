@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useChatStore } from '../store/useChatStore.js';
+import { useChatStore } from '../../store/useChatStore.js';
 import { LoaderIcon } from "lucide-react";
 import UsersLoaderAnimation from './UsersLoaderAnimation.jsx';
 import NoChatsFound from "./NoChatsFound.jsx";
-import DefaultAvatarImg from "../../assets/avatar.png";
+import DefaultAvatarImg from "../../../assets/avatar.png";
 
 function ChatList() {
   const { allChats, getAllChatPartners, isChatsLoading, setActiveChat } = useChatStore();

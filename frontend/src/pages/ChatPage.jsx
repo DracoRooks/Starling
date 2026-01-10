@@ -1,11 +1,11 @@
 import React from 'react';
 import { useChatStore } from "../store/useChatStore.js";
-import ProfileHeader from "../components/ProfileHeader.jsx";
-import ActiveTabSwitch from "../components/ActiveTabSwitch.jsx";
-import ChatList from "../components/ChatList.jsx";
-import ContactList from "../components/ContactList.jsx";
-import ChatContainer from "../components/ChatContainer.jsx";
-import ChatPlaceholder from "../components/ChatPlaceholder.jsx";
+import ProfileHeader from "../components/SideBarComponents/ProfileHeader.jsx";
+import ActiveTabSwitch from "../components/SideBarComponents/ActiveTabSwitch.jsx";
+import ChatList from "../components/SideBarComponents/ChatList.jsx";
+import ContactList from "../components/SideBarComponents/ContactList.jsx";
+import ChatContainer from "../components/ChatContainerComponents/ChatContainer.jsx";
+import ChatPlaceholder from "../components/ChatContainerComponents/ChatPlaceholder.jsx";
 import AnimatedBorder from "../components/AnimatedBorder.jsx";
 
 function ChatPage() {

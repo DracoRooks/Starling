@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState, useRef } from 'react';
 import { LoaderIcon, LogOutIcon, Volume2Icon, VolumeOffIcon } from "lucide-react";
-import { useAuthStore } from "../store/useAuthStore.js";
-import { useChatStore } from "../store/useChatStore.js";
-import DefaultAvatarImg from "../../assets/avatar.png";
+import { useAuthStore } from "../../store/useAuthStore.js";
+import { useChatStore } from "../../store/useChatStore.js";
+import DefaultAvatarImg from "../../../assets/avatar.png";
 
 const BtnClickAudio = new Audio("../../assets/audio/btn-click.wav");
 
