@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { LoaderIcon } from "lucide-react";
-import { useChatStore } from "../store/useChatStore.js";
-import DefaultAvatarImg from "../../assets/avatar.png";
+import { useChatStore } from "../../store/useChatStore.js";
+import DefaultAvatarImg from "../../../assets/avatar.png";
 import UsersLoaderAnimation from "./UsersLoaderAnimation.jsx";
 
 function ContactList() {
