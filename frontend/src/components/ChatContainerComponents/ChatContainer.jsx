@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useChatStore } from "../../store/useChatStore.js";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import ChatHeader from "./ChatHeader.jsx";
@@ -7,13 +7,35 @@ import MessagesLoadingAnimation from "./MessagesLoadingAnimation.jsx";
 import MessageInputBar from "./MessageInputBar.jsx";
 
 function ChatContainer() {
-  const { activeChat, messagesById, isMessagesLoading, getMessagesById } =
-    useChatStore();
+  const {
+    activeChat,
+    setActiveChat,
+    messagesById,
+    isMessagesLoading,
+    getMessagesById,
+  } = useChatStore();
   const { authUser } = useAuthStore();
+
+  const msgContainerEndRef = useRef(null);
 
   useEffect(() => {
     getMessagesById(activeChat._id);
   }, [getMessagesById, activeChat]);
+
+  useEffect(() => {
+    if (msgContainerEndRef.current)
+      msgContainerEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messagesById]);
+
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === "Escape") setActiveChat(null);
+    };
+
+    document.addEventListener("keyup", handleEscKey);
+
+    return () => document.removeEventListener("keyup", handleEscKey);
+  }, [setActiveChat]);
 
   return (
     <>
@@ -55,26 +77,57 @@ function ChatContainer() {
                             className="rounded-lg h-48 object-cover"
                           />
                         )}
-                        {msg.text && <p>{msg.text}</p>}
+                        {msg.text && (
+                          <p
+                            className={`wrap-anywhere ${
+                              msg.image ? "mt-1 ml-1" : ""
+                            }`}
+                          >
+                            {msg.text}
+                          </p>
+                        )}
                       </div>
+                      {isMe ? (
+                        <>
+                          <div />
+                          <p
+                            key={`${msg._id} timestamp`}
+                            className={`text-xs opacity-75 leading-none`}
+                          >
+                            {new Date(msg.createdAt).toLocaleTimeString(
+                              "en-US",
+                              {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              }
+                            )}
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p
+                            key={`${msg._id} timestamp`}
+                            className={`text-xs opacity-75 leading-none`}
+                          >
+                            {new Date(msg.createdAt).toLocaleTimeString(
+                              "en-US",
+                              {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              }
+                            )}
+                          </p>
+                          <div />
+                        </>
+                      )}
                     </div>
-                    <div />
-                    <p
-                      key={`${msg._id} timestamp`}
-                      className={`text-xs opacity-75 leading-none ${
-                        isMe ? "self-end" : "self-start"
-                      }`}
-                    >
-                      {new Date(msg.createdAt).toLocaleTimeString("en-US", {
-                        hour: "numeric",
-                        minute: "numeric",
-                        hour12: true,
-                      })}
-                    </p>
                   </div>
                 </div>
               );
             })}
+            <div ref={msgContainerEndRef} />
           </div>
         ) : (
           <NoChatHistoryPlaceholder username={activeChat.username} />

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
+import { useAuthStore } from "./useAuthStore.js";
 
 export const useChatStore = create((set, get) => ({
     allContacts: [],
@@ -11,6 +12,7 @@ export const useChatStore = create((set, get) => ({
     isContactsLoading: false,
     isChatsLoading: false,
     isMessagesLoading: false,
+    isSendingMessage: false,
     isAudioEnabled: JSON.parse(localStorage.getItem("isAudioEnabled")) === true,
 
     setActiveTab: (tab) => set({ activeTab: tab }),
@@ -64,6 +66,41 @@ export const useChatStore = create((set, get) => ({
 
         } finally {
             set({ isMessagesLoading: false });
+        }
+    },
+
+    sendMessage: async (data, userId) => {
+        set({ isSendingMessage: true });
+
+        const {authUser} = useAuthStore.getState();
+        const tempId = `tempId-${Date.now()}`;
+        const messagesState = get().messagesById;
+
+        const optimisticMessage = {
+            _id: tempId,
+            senderId: authUser._id,
+            recieverId: userId,
+            text: data.get("text"),
+            image: data.get("image"),
+            createdAt: new Date().toISOString(),
+            isOptimistic: true
+        };
+
+        set({ messagesById: [...messagesState, optimisticMessage] });
+
+        try {
+            const res = await axiosInstance.post(`/message/send/${userId}/`, data);
+            set({ messagesById: messagesState.concat(res.data) });
+            set({ activeTab: "chats" });
+
+        } catch (error) {
+            console.error("[ERROR]::USE_CHAT_STORE::SEND_MESSAGE:", error);
+            toast.error(error.response?.data?.message || error.message);
+            
+            set({ messagesById: messagesState });
+
+        } finally {
+            set({ isSendingMessage: false });
         }
     },
 }));
