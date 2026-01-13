@@ -6,17 +6,6 @@ import { XIcon } from "lucide-react";
 
 function ChatHeader() {
   const { activeChat, setActiveChat } = useChatStore();
-  const { authUser } = useAuthStore();
-
-  useEffect(() => {
-    const handleEscKey = (event) => {
-      if(event.key === "Escape") setActiveChat(null);
-    };
-
-    document.addEventListener("keyup", handleEscKey);
-
-    return () => document.removeEventListener("keydown", handleEscKey);
-  }, [setActiveChat]);
 
   return (
     <div

@@ -68,7 +68,8 @@ export const sendMessage = async (req, res) => {
     try {
         const { _id: senderId } = req.user;
         const { id: recieverId } = req.params;
-        const { text, image } = req.body;
+        const { text } = req.body;
+        const image = req.files?.image;
 
         const recieverExists = await User.exists({ _id: recieverId });
         if(!recieverExists) return res.status(404).json({ message: "Reciever not found." });
@@ -78,8 +79,8 @@ export const sendMessage = async (req, res) => {
 
         let imageUrl = "";
         if(image) {
-            const uploadResponse = await uploadCareClient.uploadFile(image);
-            imageUrl = uploadResponse.cdnUrl;
+            const uploadResponse = await uploadCareClient.uploadFile(image.data);
+            imageUrl = "https://5fsdttzqfl.ucarecd.net/" + uploadResponse.uuid + "/";
         }
 
         const newMessage = new Message({
