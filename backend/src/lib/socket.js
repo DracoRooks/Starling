@@ -15,20 +15,28 @@ const io = new Server(server, {
 
 io.use(socketAuthMiddleware);
 
-const userSocketMap = {};
+// userSocketMap: Map<userId, Set<socketId>>
+const userSocketMap = Map();
 
 io.on("connection", socket => {
     console.log(`A connection made with '${socket.user.username}' successfully`);
 
     const userId = socket.userId;
-    userSocketMap[userId] = socket.id;
+    const userSockets = userSocketMap.get(userId) ?? new Set();
+    userSockets.add(socket.id);
+    userSocketMap.set(userId, userSockets);
 
-    io.emit("getOnlineUsers", Object.keys(userSocketMap));
+    io.emit("getOnlineUsers", Array.from(userSocketMap.keys()));
 
     socket.on("disconnect", () => {
         console.log(`A user disconnected: ${socket.user.username} (${userId})`);
-        delete userSocketMap[userId];
-        io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+        const userSockets = userSocketMap.get(userId);
+        if(userSockets) {
+           userSockets.delete(socket.id);
+           if(!userSockets) userSocketMap.delete(userId);
+        }
+        socket.emit("getOnlineUsers", Array.from(userSocketMap.keys()));
     });
 });
 
