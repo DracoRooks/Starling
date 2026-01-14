@@ -4,8 +4,10 @@ import { LoaderIcon } from "lucide-react";
 import UsersLoaderAnimation from './UsersLoaderAnimation.jsx';
 import NoChatsFound from "./NoChatsFound.jsx";
 import DefaultAvatarImg from "../../../assets/avatar.png";
+import { useAuthStore } from '../../store/useAuthStore.js';
 
 function ChatList() {
+  const { onlineUsers } = useAuthStore();
   const { allChats, getAllChatPartners, isChatsLoading, setActiveChat } = useChatStore();
 
   useEffect(() => {
@@ -23,7 +25,7 @@ function ChatList() {
         className="bg-cyan-500/10 hover:bg-cyan-500/20 w-full rounded-lg p-4 cursor-pointer transition-colors"
       >
         <div key={ chat._id.toString() + "flex" } className="flex items-center gap-3">
-          <div key={ chat._id.toString() + "avatar" } className="avatar size-12 rounded-full">
+          <div key={ chat._id.toString() + "avatar" } className={`avatar ${onlineUsers.includes(`${chat._id}`) ? "avatar-online" : "avatar-offline"}`}>
             <div key={ chat._id.toString() + "size" } className="size-12 rounded-full">
               <img
                 key={ chat._id.toString() + "pfp" }

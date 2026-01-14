@@ -5,7 +5,10 @@ import DefaultAvatarImg from "../../../assets/avatar.png";
 import { XIcon } from "lucide-react";
 
 function ChatHeader() {
+  const { onlineUsers } = useAuthStore();
   const { activeChat, setActiveChat } = useChatStore();
+
+  const isOnline = onlineUsers.includes(`${activeChat._id}`);
 
   return (
     <div
@@ -13,7 +16,7 @@ function ChatHeader() {
       bg-slate-800/50 border-b border-slate-500/50"
     >
       <div className="flex flex-row items-center gap-3">
-        <div className="avatar">
+        <div className={`avatar ${ isOnline ? "avatar-online" : "avatar-offline" }`}>
           <div className="size-12 rounded-full overflow-hidden relative">
             <img
               src={activeChat.profilePic || DefaultAvatarImg}
@@ -26,7 +29,7 @@ function ChatHeader() {
           <h3 className="text-slate-200 font-medium text-xl">
             {activeChat.username}
           </h3>
-          <h3 className="text-slate-400 text-xs">online</h3>
+          <h3 className="text-slate-400 text-xs">{ isOnline ? "online" : "offline" }</h3>
         </div>
       </div>
       <button

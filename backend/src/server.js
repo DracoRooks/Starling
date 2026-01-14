@@ -10,9 +10,9 @@ import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { connectDB } from "./lib/db.js";
 import { ENV, isDevelopment, isProduction } from "./lib/env.js";
+import { server, website } from "./lib/socket.js";
 
 // creating and configuring necessary objects
-const website = express();
 const PORT = ENV.PORT || 2001;
 const __dirname = path.resolve();
 
@@ -40,7 +40,7 @@ if(isProduction) {
 // listening port
 connectDB()
 .then(() => {
-    website.listen(PORT, "0.0.0.0", error => {
+    server.listen(PORT, "0.0.0.0", error => {
         if(error) {
             console.log("[ERROR]::LISTENING_PORT:", PORT);
         } else {
