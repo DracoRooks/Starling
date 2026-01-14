@@ -16,7 +16,7 @@ const io = new Server(server, {
 io.use(socketAuthMiddleware);
 
 // userSocketMap: Map<userId, Set<socketId>>
-const userSocketMap = Map();
+const userSocketMap = new Map();
 
 io.on("connection", socket => {
     console.log(`A connection made with '${socket.user.username}' successfully`);
