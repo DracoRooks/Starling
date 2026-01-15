@@ -103,4 +103,30 @@ export const useChatStore = create((set, get) => ({
             set({ isSendingMessage: false });
         }
     },
+    
+    subscribeToMessages: () => {
+        const { isAudioEnabled, activeChat } = get();
+        if(!activeChat) return;
+
+        const { socket } = useAuthStore.getState();
+
+        const sendMsgAudio = new Audio("../../assets/audio/msg-recieved.wav");
+
+        socket.on("newMessage", newMessage => {
+            if(isAudioEnabled) {
+                sendMsgAudio.current = 0;
+                sendMsgAudio.play().catch(error => console.error("Error in playing sendMsgAudio:", error));
+            }
+
+            const isMessageFromActiveChat = newMessage.senderId === activeChat._id;
+            if(!isMessageFromActiveChat) return;
+
+            set({ messagesById: [...get().messagesById, newMessage] });
+        });
+    },
+    
+    unsubscribeToMessages: () => {
+        const { socket } = useAuthStore.getState();
+        socket?.off("newMessage");
+    },
 }));
