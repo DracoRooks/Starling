@@ -4,8 +4,9 @@ import { LoaderIcon, LogOutIcon, Volume2Icon, VolumeOffIcon } from "lucide-react
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { useChatStore } from "../../store/useChatStore.js";
 import DefaultAvatarImg from "../../../assets/avatar.png";
+import BtnClickAudio from "../../../assets/audio/btn-click.wav";
 
-const BtnClickAudio = new Audio("../../assets/audio/btn-click.wav");
+const btnClickAudio = new Audio(BtnClickAudio);
 
 function ProfileHeader() {
   const { logout, authUser, updateProfile, isUpdatingProfile } = useAuthStore();
@@ -72,8 +73,8 @@ function ProfileHeader() {
           <button
             type="button"
             onClick={() => {
-                BtnClickAudio.currentTime = 0;
-                BtnClickAudio.play().catch((error) => console.error("Failed to play BtnClickAudio:", error));
+                btnClickAudio.currentTime = 0;
+                btnClickAudio.play().catch((error) => console.error("Failed to play BtnClickAudio:", error));
                 audioToggle();
               }
             }
@@ -87,8 +88,8 @@ function ProfileHeader() {
           <button
             type="button"
             onClick={() => {
-                BtnClickAudio.currentTime = 0;
-                BtnClickAudio.play().catch((error) => console.error("Failed to play BtnClickAudio:", error));
+                btnClickAudio.currentTime = 0;
+                btnClickAudio.play().catch((error) => console.error("Failed to play BtnClickAudio:", error));
                 logout();
               }
             }

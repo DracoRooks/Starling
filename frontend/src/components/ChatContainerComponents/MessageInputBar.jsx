@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { ImageIcon, SendHorizontalIcon, XIcon } from "lucide-react";
 import { useChatStore } from "../../store/useChatStore";
 import toast from "react-hot-toast";
+import MsgSentAudio from "../../../assets/audio/msg-sent.wav";
 
-const MsgSentAudio = new Audio("../../../assets/audio/msg-sent.wav");
+const msgSentAudio = new Audio(MsgSentAudio);
 
 function MessageInputBar() {
   const { sendMessage, activeChat, isAudioEnabled } = useChatStore();
@@ -28,8 +29,8 @@ function MessageInputBar() {
     formData.append("text", textMessage);
 
     if (isAudioEnabled) {
-      MsgSentAudio.current = 0;
-      MsgSentAudio.play().catch((error) =>
+      msgSentAudio.current = 0;
+      msgSentAudio.play().catch((error) =>
         console.error("Failed to play msg-sent.wav", error)
       );
     }
