@@ -1,3 +1,4 @@
+import { getRecieverSocketId, io } from "../lib/socket.js";
 import { uploadCareClient } from "../lib/uploadCare.js";
 import Message from "../models/Message.js";
 import User from "../models/User.js";
@@ -92,7 +93,10 @@ export const sendMessage = async (req, res) => {
 
         const savedMessage = await newMessage.save();
 
-        // todo: send messages in real-time if the user is online -socket.io
+        const recieverSocketId = getRecieverSocketId(recieverId);
+        if(recieverSocketId) {
+            io.emit("newMessage", savedMessage);
+        }
 
         return res.status(201).json(savedMessage);
 
