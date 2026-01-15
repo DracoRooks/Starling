@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
 import { useAuthStore } from "./useAuthStore.js";
+import RecievedMsgAudio from "../../assets/audio/msg-sent.wav";
 
 export const useChatStore = create((set, get) => ({
     allContacts: [],
@@ -110,12 +111,12 @@ export const useChatStore = create((set, get) => ({
 
         const { socket } = useAuthStore.getState();
 
-        const sendMsgAudio = new Audio("../../assets/audio/msg-recieved.wav");
+        const recievedMsgAudio = new Audio(RecievedMsgAudio);
 
         socket.on("newMessage", newMessage => {
             if(isAudioEnabled) {
-                sendMsgAudio.current = 0;
-                sendMsgAudio.play().catch(error => console.error("Error in playing sendMsgAudio:", error));
+                recievedMsgAudio.current = 0;
+                recievedMsgAudio.play().catch(error => console.error("Error in playing sendMsgAudio:", error));
             }
 
             const isMessageFromActiveChat = newMessage.senderId === activeChat._id;
